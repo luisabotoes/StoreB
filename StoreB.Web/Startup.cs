@@ -27,6 +27,7 @@ namespace StoreB.Web
 
             });
 
+            services.AddTransient<SeedDb>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

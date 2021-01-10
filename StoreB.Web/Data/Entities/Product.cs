@@ -1,13 +1,16 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StoreB.Web.Data.Entities
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    public class Product {
+    public class Product
+    {
         public int Id { get; set; }
 
-        [MaxLength(50,ErrorMessage ="The field {0} can only contain {1} characters length." )]
+        [MaxLength(50, ErrorMessage = "The field {0} can only contain {1} characters length.")]
         [Required]
         public string Name { get; set; }
 
@@ -17,7 +20,7 @@ namespace StoreB.Web.Data.Entities
 
 
         [Display(Name = "Image")]
-        public decimal ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
 
 
         [Display(Name = "Last Purchase")]
@@ -36,3 +39,4 @@ namespace StoreB.Web.Data.Entities
         public Double Stock { get; set; }
     }
 }
+

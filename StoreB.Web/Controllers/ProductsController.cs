@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreB.Web.Data;
+using StoreB.Web.Data.Entities;
 
-namespace StoreB.Web.Data.Entities
+namespace StoreB.Web.Controllers
 {
     public class ProductsController : Controller
     {
