@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using StoreB.Web.Data;
-
-namespace StoreB.Web
+﻿namespace StoreB.Web
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using StoreB.Web.Data;
+    using StoreB.Web.Data.Entities;
+    using Helpers;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -21,6 +24,20 @@ namespace StoreB.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<User, IdentityRole>(cfg =>
+             {
+                 cfg.User.RequireUniqueEmail = true;
+                 cfg.Password.RequireDigit = false;
+                 cfg.Password.RequiredUniqueChars = 0;
+                 cfg.Password.RequireLowercase = false;
+                 cfg.Password.RequireNonAlphanumeric = false;
+                 cfg.Password.RequireUppercase = false;
+                 cfg.Password.RequiredLength = 6;
+
+             })
+            .AddEntityFrameworkStores<DataContext>();
+            
+            
             services.AddDbContext<DataContext>(cfg =>
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
@@ -31,6 +48,7 @@ namespace StoreB.Web
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IUserHelper, UserHelper>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
