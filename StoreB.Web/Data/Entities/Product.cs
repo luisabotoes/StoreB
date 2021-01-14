@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace StoreB.Web.Data.Entities
+﻿namespace StoreB.Web.Data.Entities
 {
-    public class Product
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Product:IEntity
     {
         public int Id { get; set; }
 
@@ -36,7 +33,7 @@ namespace StoreB.Web.Data.Entities
 
 
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
-        public Double Stock { get; set; }
+        public double Stock { get; set; }
     }
 }
 
