@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using StoreB.Web.Data.Entities;
+using StoreB.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,9 @@ namespace StoreB.Web.Helpers
 
         Task<IdentityResult> AddUserAsync(User user, string password);
 
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
     }
 }
