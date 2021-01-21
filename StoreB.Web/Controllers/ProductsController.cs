@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace StoreB.Web.Controllers
 {
-    
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
@@ -47,8 +47,9 @@ namespace StoreB.Web.Controllers
             return View(product);
         }
 
+
         // GET: Products/Create
-        [Authorize]
+ 
         public IActionResult Create()
         {
             return View();
@@ -110,7 +111,7 @@ namespace StoreB.Web.Controllers
         }
 
         // GET: Products/Edit/5
-        [Authorize]
+        
         public async Task <IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -204,7 +205,7 @@ namespace StoreB.Web.Controllers
         }
 
         // GET: Products/Delete/5
-        [Authorize]
+
         public async Task <IActionResult> Delete(int? id)
         {
             if (id == null)
