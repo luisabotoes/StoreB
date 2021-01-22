@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StoreB.Web.Data;
-using StoreB.Web.Data.Entities;
-using StoreB.Web.Helpers;
-using StoreB.Web.Models;
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 
 namespace StoreB.Web.Controllers
 {
-    [Authorize]
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Data;
+    using Data.Entities;
+    using StoreB.Web.Helpers;
+    using StoreB.Web.Models;
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
+
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
@@ -31,7 +31,7 @@ namespace StoreB.Web.Controllers
         }
 
         // GET: Products/Details/5
-        public async Task <IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -49,7 +49,7 @@ namespace StoreB.Web.Controllers
 
 
         // GET: Products/Create
- 
+        [Authorize(Roles="Admin")]
         public IActionResult Create()
         {
             return View();
@@ -66,7 +66,7 @@ namespace StoreB.Web.Controllers
             {
                 var path = string.Empty;
 
-                if(view.ImageFile != null && view.ImageFile.Length > 0)
+                if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
                     var guid = Guid.NewGuid().ToString();
                     var file = $"{guid}.jpg";
@@ -76,7 +76,7 @@ namespace StoreB.Web.Controllers
                         "wwwroot\\images\\Products",
                         file);
 
-                    using(var stream = new FileStream(path, FileMode.Create))
+                    using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
@@ -111,8 +111,8 @@ namespace StoreB.Web.Controllers
         }
 
         // GET: Products/Edit/5
-        
-        public async Task <IActionResult> Edit(int? id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -151,7 +151,7 @@ namespace StoreB.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,ImageFile,LastPurchase,LastSale,IsAvailable,Stock")] ProductViewModel view)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,ImageFile,ImageUrl,LastPurchase,LastSale,IsAvailable,Stock")] ProductViewModel view)
         {
             if (ModelState.IsValid)
             {
@@ -183,10 +183,10 @@ namespace StoreB.Web.Controllers
                     }
                     var product = this.ToProduct(view, path);
 
-                  
+
                     product.User = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     await this.productRepository.UpdateAsync(product);
-                
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -205,8 +205,8 @@ namespace StoreB.Web.Controllers
         }
 
         // GET: Products/Delete/5
-
-        public async Task <IActionResult> Delete(int? id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
